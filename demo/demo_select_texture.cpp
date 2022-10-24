@@ -43,7 +43,7 @@ int demo_select_texture(int argc, char* argv[])
     data.wnd = "origin";
     const auto demo_wnd = "demo";
 
-    int eps = 50;
+    int eps = 100;
     cv::namedWindow(data.wnd);
     cv::namedWindow(demo_wnd);
     // \todo choose reasonable max value
@@ -56,6 +56,7 @@ int demo_select_texture(int argc, char* argv[])
     {
         cap >> data.image;
 
+        //cv::resize(data.image, data.image, cv::Size(320, 240));
         cv::cvtColor(data.image, frame_gray, cv::COLOR_BGR2GRAY);
         const cv::Rect roi = {data.tl, data.br};
         if (roi.area())
