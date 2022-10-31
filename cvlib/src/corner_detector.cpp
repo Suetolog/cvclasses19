@@ -84,7 +84,7 @@ void corner_detector_fast::detect(cv::InputArray image, CV_OUT std::vector<cv::K
 bool corner_detector_fast::check_count_same_in_a_row(int* arr, int thresh)
 {
     int* first = arr;
-    int* last = arr + 16;
+    int* last = arr + 15;
     int* prev = first;
     int count = 1;
     int max_count = 1;
