@@ -16,6 +16,7 @@ namespace cvlib
 /// \param stddev, in - threshold to treat regions as homogeneous
 /// \return segmented image
 cv::Mat split_and_merge(const cv::Mat& image, double stddev, int mihWidth, int minHeight);
+//cv::Mat split_and_merge(const cv::Mat& image, double stddev);
 
 /// \brief Segment texuture on passed image according to sample in ROI
 /// \param image, in - input image
@@ -117,6 +118,11 @@ class corner_detector_fast : public cv::Feature2D
     {
         return "FAST_Binary";
     }
+
+    //if the number of consecutive same elements of the arr array is greater than or equal to thresh, func returns true
+    //arr is a mass with size 17, where arr[0] dont use 
+    bool check_count_same_in_a_row(int* arr, int thresh); //
+
 };
 
 /// \brief Descriptor matched based on ratio of SSD
