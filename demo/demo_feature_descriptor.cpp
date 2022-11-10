@@ -100,6 +100,22 @@ int demo_feature_descriptor(int argc, char* argv[])
             imshow("Histogramm of descriptors distanses", histImage);
         }
 
+        if (pressed_key == 'f') // space
+        {
+            cv::Mat descriptors_a1;
+            cv::FileStorage file("test.json", cv::FileStorage::WRITE | cv::FileStorage::FORMAT_JSON);
+
+            detector_a->compute(frame, corners, descriptors_a);
+
+            file << detector_a->getDefaultName() + "FIRST CALL" << descriptors_a;
+
+            detector_a->compute(frame, corners, descriptors_a1);
+
+            file << detector_a->getDefaultName() + "SECOND CALL" << descriptors_a1;
+
+             std::cout << "Dump descriptors complete! \n";
+        }
+
         std::cout << "Feature points: " << corners.size() << "\r";
     }
 

@@ -134,10 +134,13 @@ class corner_detector_fast : public cv::Feature2D
         }
     };
     //this function creates "pairs_count" random pairs (offsets from keypoint) in patch with size (patch_size * patch_size)
-    void create_random_pairs(int pairs_count, int patch_size, std::vector<pair>& pairs_offset);
+    void create_random_pairs(int pairs_count, int patch_size);
     //this function performs a comparison of two pixels 
     //it returns 1 if the intensity of the pixel of the first offset from keypoint is less than the second, else 0
     uint8_t binary_test(cv::Mat image, cv::Point keypoint, pair p);
+
+    private:
+    std::vector<pair> _pairs_offset;
 };
 
 /// \brief Descriptor matched based on ratio of SSD

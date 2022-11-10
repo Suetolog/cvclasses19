@@ -135,12 +135,17 @@ void corner_detector_fast::compute(cv::InputArray image, std::vector<cv::KeyPoin
     const int desc_length = 32; // 256 compares => 256 bits => 32 bytes => 32 uint8_t
     cv::Mat temp_desc_mat = cv::Mat(static_cast<int>(keypoints.size()), desc_length, CV_8U);
 
-    auto img = image.getMat();
+    //auto img = image.getMat();
+    cv::Mat img;
+    image.getMat().copyTo(img);
     temp_desc_mat.setTo(0);
 
     cv::GaussianBlur(img, img, cv::Size(5, 5), 2, 2); //Размытие по гаусу
-    std::vector<pair> pairs_offset;
-    create_random_pairs(256, patch_size, pairs_offset);
+    if (_pairs_offset.empty())
+    {
+        create_random_pairs(256, patch_size);
+    }
+    
 
     uint8_t* ptr = reinterpret_cast<uint8_t*>(temp_desc_mat.ptr());
     int skiped_keypoints = 0;
@@ -165,7 +170,7 @@ void corner_detector_fast::compute(cv::InputArray image, std::vector<cv::KeyPoin
             uint8_t temp = 0;
             for (int j = 0; j < 8; j++)
             {
-                temp |= (binary_test(img, pt.pt, pairs_offset[idx]) << (7 - j));
+                temp |= (binary_test(img, pt.pt, _pairs_offset[idx]) << (7 - j));
                 idx++;
             }
             *ptr = temp;
@@ -182,7 +187,7 @@ void corner_detector_fast::compute(cv::InputArray image, std::vector<cv::KeyPoin
 }
 
 
-void corner_detector_fast::create_random_pairs(int pairs_count, int patch_size, std::vector<pair>& pairs_offset)
+void corner_detector_fast::create_random_pairs(int pairs_count, int patch_size)
 {
     std::default_random_engine generator;
     std::normal_distribution<double> distribution(0, patch_size/2/3);
@@ -202,7 +207,7 @@ void corner_detector_fast::create_random_pairs(int pairs_count, int patch_size, 
         if (std::abs(x2) > max_abs_x) x2 = (x2 < 0 ? -max_abs_x : max_abs_x);
         if (std::abs(y2) > max_abs_y) y2 = (y2 < 0 ? -max_abs_y : max_abs_y);
         
-        pairs_offset.push_back(pair(cv::Point(x1,y1), cv::Point(x2,y2)));
+        _pairs_offset.push_back(pair(cv::Point(x1,y1), cv::Point(x2,y2)));
     }
 }
 
