@@ -122,7 +122,25 @@ class corner_detector_fast : public cv::Feature2D
     //if the number of consecutive same elements of the arr array is greater than or equal to thresh, func returns true
     //arr is a mass with size 17, where arr[0] dont use 
     bool check_count_same_in_a_row(int* arr, int thresh); //
+    typedef struct pair
+    {
+        cv::Point offset1;
+        cv::Point offset2;
 
+        pair(cv::Point of1, cv::Point of2)
+        {
+            offset1 = of1;
+            offset2 = of2;
+        }
+    };
+    //this function creates "pairs_count" random pairs (offsets from keypoint) in patch with size (patch_size * patch_size)
+    void create_random_pairs(int pairs_count, int patch_size);
+    //this function performs a comparison of two pixels 
+    //it returns 1 if the intensity of the pixel of the first offset from keypoint is less than the second, else 0
+    uint8_t binary_test(cv::Mat image, cv::Point keypoint, pair p);
+
+    private:
+    std::vector<pair> _pairs_offset;
 };
 
 /// \brief Descriptor matched based on ratio of SSD

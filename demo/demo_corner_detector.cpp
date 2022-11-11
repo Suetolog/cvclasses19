@@ -32,7 +32,7 @@ int demo_corner_detector(int argc, char* argv[])
         cv::cvtColor(frame, frame, cv::COLOR_BGR2GRAY);
         cv::imshow(main_wnd, frame);
 
-        cv::blur(frame, frame, cv::Size(5, 5)); //Дополнительно добавлено гауссово сглаживания для устранения шумов
+        //cv::blur(frame, frame, cv::Size(5, 5)); //Дополнительно добавлено гауссово сглаживания для устранения шумов
 
         detector->detect(frame, corners);
         cv::drawKeypoints(frame, corners, frame, cv::Scalar(0, 0, 255));
