@@ -36,18 +36,20 @@ void corner_detector_fast::detect(cv::InputArray image, CV_OUT std::vector<cv::K
     int t = 10; //threshold for fast algorithm
     cv::Mat img_mat = image.getMat();
     // \todo implement FAST with minimal LOCs(lines of code), but keep code readable.
-    cv::blur(img_mat, img_mat, cv::Size(5, 5)); //Дополнительно добавлено гауссово сглаживания для устранения шумов
+    cv::Mat img;
+    img_mat.copyTo(img);
+    cv::blur(img, img, cv::Size(5, 5)); //Дополнительно добавлено гауссово сглаживания для устранения шумов
     for (int i = 3; i < image.rows() - 3; i++)
         for (int j = 3; j < image.cols() - 3; j++)
         {
             int compare_arr[17] = {0}; // compare result array (-1 - darker, 0 - same, 1 - lighter)
             cv::Point pix_pos = cv::Point(j, i);
-            int Ip = img_mat.at<uint8_t>(pix_pos); // suspect pixel
+            int Ip = img.at<uint8_t>(pix_pos); // suspect pixel
             //check pixels 1, 5, 9, 13
             int count_l = 0, count_d = 0; //counters for lighter and darker pixels
             for (int k = 1; k <= 13; k += 4)
             {
-                int Ipi = img_mat.at<uint8_t>(pix_pos + fast_offsets[k]);
+                int Ipi = img.at<uint8_t>(pix_pos + fast_offsets[k]);
                 if (Ipi > Ip + t)
                 {
                     compare_arr[k] = 1;
@@ -68,7 +70,7 @@ void corner_detector_fast::detect(cv::InputArray image, CV_OUT std::vector<cv::K
                 {
                     if ((k == 1) || (k == 5) || (k == 9) || (k == 13))
                         continue;
-                    int Ipi = img_mat.at<uint8_t>(pix_pos + fast_offsets[k]);
+                    int Ipi = img.at<uint8_t>(pix_pos + fast_offsets[k]);
                     if (Ipi > Ip + t)
                         compare_arr[k] = 1;
                     else if (Ipi < Ip - t)
