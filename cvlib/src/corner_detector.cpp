@@ -154,13 +154,13 @@ void corner_detector_fast::compute(cv::InputArray image, std::vector<cv::KeyPoin
     for (const auto& pt : keypoints)
     {
         // keypoints on the edges of the image are skipped
-        if ((pt.pt.x < patch_size / 2) || (pt.pt.y < patch_size / 2))
+        if ((pt.pt.x <= patch_size / 2) || (pt.pt.y <= patch_size / 2))
         {
             skiped_keypoints++;
             continue;
         }
 
-        if ((pt.pt.x > (img.cols - patch_size / 2)) || (pt.pt.y > (img.rows - patch_size / 2)))
+        if ((pt.pt.x >= (img.cols - patch_size / 2)) || (pt.pt.y >= (img.rows - patch_size / 2)))
         {
             skiped_keypoints++;
             continue;
@@ -221,8 +221,10 @@ uint8_t corner_detector_fast::binary_test(cv::Mat image, cv::Point keypoint, pai
         return 0;
 }
 
-void corner_detector_fast::detectAndCompute(cv::InputArray, cv::InputArray, std::vector<cv::KeyPoint>&, cv::OutputArray descriptors, bool /*= false*/)
+void corner_detector_fast::detectAndCompute(cv::InputArray image, cv::InputArray mask, std::vector<cv::KeyPoint>& keypoints,
+                                            cv::OutputArray descriptors, bool useProvidedKeypoints)
 {
-    // \todo implement me
+    detect(image, keypoints);
+    compute(image, keypoints, descriptors);
 }
 } // namespace cvlib
