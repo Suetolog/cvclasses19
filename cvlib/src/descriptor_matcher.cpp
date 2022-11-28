@@ -44,11 +44,11 @@ void descriptor_matcher::knnMatchImpl(cv::InputArray queryDescriptors, std::vect
                 t_row_min = j;
                 find_flag = true;
             }
-            if (find_flag)
-            {
-                matches[i].emplace_back(i, t_row_min, min_distance);
-            }
         }
+        if (find_flag)
+          {
+              matches[i].emplace_back(i, t_row_min, min_distance);
+          }
         // \todo implement Ratio of SSD check.
 
        // matches[i].emplace_back(i, rnd.uniform(0, t_desc.rows), FLT_MAX);
