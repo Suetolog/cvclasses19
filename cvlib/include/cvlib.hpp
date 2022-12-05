@@ -148,7 +148,7 @@ class descriptor_matcher : public cv::DescriptorMatcher
 {
     public:
     /// \brief ctor
-    descriptor_matcher(float ratio = 1.5) : ratio_(ratio)
+    descriptor_matcher(int ratio = 1) : ratio_(ratio)
     {
     }
 
@@ -185,7 +185,9 @@ class descriptor_matcher : public cv::DescriptorMatcher
     }
 
     private:
-    float ratio_;
+    int calc_hamming_distance(uint8_t* desc1, uint8_t* desc2, uint8_t size); //size - descriptors size in bytes
+
+    int ratio_;
 };
 
 /// \brief Stitcher for merging images into big one
