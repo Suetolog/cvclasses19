@@ -193,7 +193,22 @@ class descriptor_matcher : public cv::DescriptorMatcher
 /// \brief Stitcher for merging images into big one
 class Stitcher
 {
-    /// \todo design and implement
+public:
+    Stitcher();
+    ~Stitcher(){}
+        
+    void init(cv::Mat init_image, int mather_ratio = 15);
+    void stitch(cv::Mat input_image);
+    cv::Mat get_panoram_image(void);
+
+    private:
+    cv::Mat _panoram;
+    std::vector<cv::KeyPoint> _panoram_corners;
+    cv::Mat _panoram_descriptors;
+    //cv::Ptr<corner_detector_fast> _corn_detector;
+    cv::Ptr<cv::AKAZE> _corn_detector;
+    descriptor_matcher _decr_matcher;
+
 };
 } // namespace cvlib
 
